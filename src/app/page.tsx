@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Vote, Shield, Users, TrendingUp, Menu, X, ChevronRight, Check, Lock, Key, Fingerprint, Eye, Target, Heart, Rocket, Globe, Award, Zap } from 'lucide-react';
 
 export default function HomePage() {
@@ -24,6 +25,9 @@ export default function HomePage() {
               <a href="#how-it-works" className="text-gray-300 hover:text-white transition">How It Works</a>
               <a href="#security" className="text-gray-300 hover:text-white transition">Security</a>
               <a href="#about" className="text-gray-300 hover:text-white transition">About</a>
+              <Link href="/contact" className="text-gray-300 hover:text-white transition">
+                Contact
+              </Link>
               <button className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-cyan-700 transition">
                 Launch App
               </button>
@@ -47,6 +51,9 @@ export default function HomePage() {
               <a href="#how-it-works" className="block text-gray-300 hover:text-white">How It Works</a>
               <a href="#security" className="block text-gray-300 hover:text-white">Security</a>
               <a href="#about" className="block text-gray-300 hover:text-white">About</a>
+              <Link href="/contact" className="block text-gray-300 hover:text-white">
+                Contact
+              </Link>
               <button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-2 rounded-lg">
                 Launch App
               </button>

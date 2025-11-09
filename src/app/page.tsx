@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { Vote, Shield, Users, TrendingUp, Menu, X, ChevronRight, Check } from 'lucide-react';
+import { Vote, Shield, Users, TrendingUp, Menu, X, ChevronRight, Check, Lock, Key, Fingerprint, Eye } from 'lucide-react';
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -198,6 +198,104 @@ export default function HomePage() {
                 <p className="text-gray-400">{item.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Security Section */}
+      <section id="security" className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">Enterprise-Grade Security</h2>
+            <p className="text-xl text-gray-400">Your votes are protected by multiple layers of advanced security</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8 hover:border-blue-500/40 transition">
+              <div className="bg-gradient-to-br from-red-500 to-orange-500 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
+                <Lock className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Cryptographic Security</h3>
+              <p className="text-gray-400">Advanced encryption algorithms ensure your vote remains secure and unreadable during transmission and storage.</p>
+            </div>
+
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8 hover:border-blue-500/40 transition">
+              <div className="bg-gradient-to-br from-blue-500 to-indigo-500 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
+                <Key className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Private Key Protection</h3>
+              <p className="text-gray-400">Your private keys are stored securely and never exposed. Only you have access to cast your vote.</p>
+            </div>
+
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8 hover:border-blue-500/40 transition">
+              <div className="bg-gradient-to-br from-purple-500 to-pink-500 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
+                <Fingerprint className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Identity Verification</h3>
+              <p className="text-gray-400">Multi-factor authentication and biometric verification prevent unauthorized access and voting fraud.</p>
+            </div>
+
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8 hover:border-blue-500/40 transition">
+              <div className="bg-gradient-to-br from-green-500 to-teal-500 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
+                <Eye className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Zero-Knowledge Proofs</h3>
+              <p className="text-gray-400">Verify your vote was counted without revealing your choice, ensuring both privacy and transparency.</p>
+            </div>
+          </div>
+
+          <div className="mt-16 grid md:grid-cols-2 gap-8">
+            <div className="bg-gradient-to-br from-slate-800/70 to-slate-900/70 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-8">
+              <div className="flex items-center space-x-4 mb-6">
+                <div className="bg-green-500/20 p-3 rounded-lg">
+                  <Shield className="w-8 h-8 text-green-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Immutable Blockchain</h3>
+              </div>
+              <p className="text-gray-300 text-lg mb-4">
+                Every vote is recorded on an immutable blockchain ledger. Once a vote is cast, it cannot be altered, deleted, or tampered with by anyone.
+              </p>
+              <ul className="space-y-3 text-gray-400">
+                <li className="flex items-center space-x-2">
+                  <Check className="w-5 h-5 text-green-400" />
+                  <span>Distributed across thousands of nodes</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Check className="w-5 h-5 text-green-400" />
+                  <span>Cryptographically verified transactions</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Check className="w-5 h-5 text-green-400" />
+                  <span>Public audit trail for transparency</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-gradient-to-br from-slate-800/70 to-slate-900/70 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-8">
+              <div className="flex items-center space-x-4 mb-6">
+                <div className="bg-blue-500/20 p-3 rounded-lg">
+                  <Lock className="w-8 h-8 text-blue-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">End-to-End Encryption</h3>
+              </div>
+              <p className="text-gray-300 text-lg mb-4">
+                Military-grade encryption protects your vote from the moment it's cast until it's permanently recorded on the blockchain.
+              </p>
+              <ul className="space-y-3 text-gray-400">
+                <li className="flex items-center space-x-2">
+                  <Check className="w-5 h-5 text-green-400" />
+                  <span>AES-256 encryption standard</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Check className="w-5 h-5 text-green-400" />
+                  <span>Secure key management</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Check className="w-5 h-5 text-green-400" />
+                  <span>Protected data transmission</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>

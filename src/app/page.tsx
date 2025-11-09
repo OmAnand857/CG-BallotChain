@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { Vote, Shield, Users, TrendingUp, Menu, X, ChevronRight, Check, Lock, Key, Fingerprint, Eye } from 'lucide-react';
+import { Vote, Shield, Users, TrendingUp, Menu, X, ChevronRight, Check, Lock, Key, Fingerprint, Eye, Target, Heart, Rocket, Globe, Award, Zap } from 'lucide-react';
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -295,6 +295,132 @@ export default function HomePage() {
                   <span>Protected data transmission</span>
                 </li>
               </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-800/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">About CG-Ballotchain</h2>
+            <p className="text-xl text-gray-400">Pioneering the future of democratic participation through blockchain innovation</p>
+          </div>
+
+          {/* Mission & Vision */}
+          <div className="grid md:grid-cols-2 gap-8 mb-16">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8 hover:border-blue-500/40 transition">
+              <div className="bg-gradient-to-br from-blue-500 to-cyan-500 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
+                <Target className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">Our Mission</h3>
+              <p className="text-gray-400 text-lg leading-relaxed">
+                To revolutionize the democratic process by providing a secure, transparent, and accessible voting platform that empowers citizens worldwide. We believe every vote should count and every voice should be heard without compromise.
+              </p>
+            </div>
+
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8 hover:border-blue-500/40 transition">
+              <div className="bg-gradient-to-br from-purple-500 to-pink-500 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
+                <Rocket className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">Our Vision</h3>
+              <p className="text-gray-400 text-lg leading-relaxed">
+                To become the global standard for digital voting, making secure and transparent elections accessible to everyone. We envision a world where trust in electoral systems is restored through technology that guarantees integrity and accessibility.
+              </p>
+            </div>
+          </div>
+
+          {/* Our Values */}
+          <div className="mb-16">
+            <h3 className="text-3xl font-bold text-white text-center mb-12">Our Core Values</h3>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-gradient-to-br from-slate-800/70 to-slate-900/70 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-8 text-center">
+                <div className="bg-gradient-to-br from-green-500 to-emerald-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Shield className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-xl font-bold text-white mb-4">Trust & Integrity</h4>
+                <p className="text-gray-400">
+                  We build systems with unwavering commitment to security and honesty, ensuring every vote is protected and every result is verifiable.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-slate-800/70 to-slate-900/70 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-8 text-center">
+                <div className="bg-gradient-to-br from-blue-500 to-cyan-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Globe className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-xl font-bold text-white mb-4">Transparency</h4>
+                <p className="text-gray-400">
+                  Every process is open for scrutiny while maintaining voter privacy. We believe transparency builds trust and strengthens democracy.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-slate-800/70 to-slate-900/70 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-8 text-center">
+                <div className="bg-gradient-to-br from-purple-500 to-pink-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Heart className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-xl font-bold text-white mb-4">Accessibility</h4>
+                <p className="text-gray-400">
+                  Voting should be accessible to everyone, regardless of location or circumstance. We're committed to breaking down barriers to participation.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Story Section */}
+          <div className="bg-gradient-to-br from-slate-800/70 to-slate-900/70 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-10 md:p-12">
+            <div className="grid md:grid-cols-2 gap-10 items-center">
+              <div>
+                <div className="inline-block bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-2 mb-6">
+                  <span className="text-blue-400 text-sm font-medium">Our Story</span>
+                </div>
+                <h3 className="text-3xl font-bold text-white mb-6">Building the Future of Democracy</h3>
+                <p className="text-gray-300 text-lg mb-4 leading-relaxed">
+                  CG-Ballotchain was born from a simple yet powerful idea: democracy should be as secure and transparent as blockchain technology allows. In an era where trust in electoral systems is paramount, we've harnessed the power of decentralized technology to create a voting platform that's both secure and accessible.
+                </p>
+                <p className="text-gray-300 text-lg leading-relaxed">
+                  Our team of blockchain experts, security specialists, and democracy advocates came together to solve one of society's most critical challenges—ensuring that every vote is counted, verified, and protected from tampering.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="bg-slate-700/50 rounded-xl p-6 text-center">
+                  <div className="text-4xl font-bold text-white mb-2">2023</div>
+                  <div className="text-gray-400">Founded</div>
+                </div>
+                <div className="bg-slate-700/50 rounded-xl p-6 text-center">
+                  <div className="text-4xl font-bold text-white mb-2">50+</div>
+                  <div className="text-gray-400">Countries</div>
+                </div>
+                <div className="bg-slate-700/50 rounded-xl p-6 text-center">
+                  <div className="text-4xl font-bold text-white mb-2">100%</div>
+                  <div className="text-gray-400">Open Source</div>
+                </div>
+                <div className="bg-slate-700/50 rounded-xl p-6 text-center">
+                  <div className="text-4xl font-bold text-white mb-2">24/7</div>
+                  <div className="text-gray-400">Support</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Technology Highlights */}
+          <div className="mt-16">
+            <h3 className="text-3xl font-bold text-white text-center mb-12">Powered by Innovation</h3>
+            <div className="grid md:grid-cols-4 gap-6">
+              {[
+                { icon: Zap, title: "Lightning Fast", desc: "Real-time processing" },
+                { icon: Shield, title: "Bank-Level Security", desc: "Military-grade encryption" },
+                { icon: Award, title: "Certified", desc: "Industry standards compliant" },
+                { icon: Users, title: "Scalable", desc: "Millions of votes supported" }
+              ].map((item, idx) => (
+                <div key={idx} className="bg-slate-800/50 backdrop-blur-sm border border-blue-500/20 rounded-xl p-6 text-center hover:border-blue-500/40 transition">
+                  <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <item.icon className="w-6 h-6 text-blue-400" />
+                  </div>
+                  <h4 className="text-lg font-bold text-white mb-2">{item.title}</h4>
+                  <p className="text-gray-400 text-sm">{item.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

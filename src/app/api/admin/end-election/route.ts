@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { ballotContract, getServerSigner } from '~/lib/contract';
-import { verifyAdminToken } from '~/lib/adminAuth';
+import { ballotContract, getServerSigner } from '../../../../../lib/contract';
+import { verifyAdminToken } from '../../../../../lib/adminAuth';
 
 export async function POST(request: Request) {
   try {

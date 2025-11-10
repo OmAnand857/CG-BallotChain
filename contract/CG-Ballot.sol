@@ -28,6 +28,8 @@ contract CGBallotChain {
     event OverseerAdded(address indexed addr);
     event OverseerRemoved(address indexed addr);
     event VoteReset(uint indexed winnerId, string winnerName);
+    // New event to signal candidate removal
+    event CandidatesCleared(uint formerCandidateCount);
 
     // modifiers
     modifier onlyOwner() {
@@ -102,7 +104,6 @@ contract CGBallotChain {
     }
     
     /// @notice Returns the ID and name of the last declared winner.
-    /// Returns a placeholder ID and empty string if no election has concluded.
     function getLastWinner() 
         external 
         view 
@@ -123,15 +124,18 @@ contract CGBallotChain {
         votes = new uint[](n);
 
         for (uint i = 0; i < n; i++) {
-            Candidate storage c = candidates[i];
-            names[i] = c.name;
-            infos[i] = c.info;
-            votes[i] = c.voteCount;
+            // Note: This check implicitly prevents accessing data if candidatesCount is 0
+            if (i < candidatesCount) {
+                Candidate storage c = candidates[i];
+                names[i] = c.name;
+                infos[i] = c.info;
+                votes[i] = c.voteCount;
+            }
         }
         return (names, infos, votes);
     }
 
-    /// @notice Finds the winner and resets all vote counts. (Owner or Overseer only)
+    /// @notice Finds the winner, resets all vote counts, and clears all candidates. (Owner or Overseer only)
     function declareWinnerAndReset() external onlyOverseerOrOwner {
         require(candidatesCount > 0, "No candidates to declare winner");
         
@@ -164,12 +168,13 @@ contract CGBallotChain {
             finalWinnerId = topCandidates[0];
         } else if (topCandidateCount > 1) {
             // Case: Tie-breaker logic using pseudo-random number
+            // Using block.prevrandao for pre-EIP-4399 blockhash compatibility (difficulty on old versions)
             uint randomSeed = uint(keccak256(abi.encodePacked(block.timestamp, block.prevrandao, msg.sender)));
             uint winnerIndexInTiedGroup = randomSeed % topCandidateCount;
             finalWinnerId = topCandidates[winnerIndexInTiedGroup];
         } 
         
-        // 4. Update state with winner info and Reset Votes
+        // 4. Update state with winner info and emit event
         if (finalWinnerId != type(uint).max) {
             // Store winner data
             lastWinnerId = finalWinnerId;
@@ -183,10 +188,19 @@ contract CGBallotChain {
             lastWinnerName = "";
         }
         
-        // Reset Votes for everyone (regardless of winner)
-        for (uint i = 0; i < candidatesCount; i++) {
-            candidates[i].voteCount = 0;
+        // 5. Reset Votes and CLEAR all candidates
+        uint formerCount = candidatesCount;
+        
+        // Reset Votes for everyone and delete candidate structs from storage
+        for (uint i = 0; i < formerCount; i++) {
+            delete candidates[i];
         }
+
+        // Clear candidates by resetting the counter
+        candidatesCount = 0;
+
+        // Emit the event to signal the candidates are cleared
+        emit CandidatesCleared(formerCount);
     }
 
     /// @notice Owner can add an overseer

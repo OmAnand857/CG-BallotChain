@@ -24,8 +24,12 @@ export async function POST(request: Request) {
 
     let tx;
     if (action === 'add') {
+          // @ts-ignore
+
       tx = await contractWithSigner.addOverseer(address);
     } else {
+          // @ts-ignore
+
       tx = await contractWithSigner.removeOverseer(address);
     }
     await tx.wait();

@@ -20,6 +20,7 @@ export async function POST(request: Request) {
     const contractWithSigner = ballotContract.connect(signer);
 
     // Assuming the function is named endElection()
+    // @ts-ignore
     const tx = await contractWithSigner.endElection();
     await tx.wait();
 

@@ -21,6 +21,7 @@ export async function POST(request: Request) {
 
     const signer = getServerSigner();
     const contractWithSigner = ballotContract.connect(signer);
+    // @ts-ignore
 
     const tx = await contractWithSigner.transferOwnership(newOwner);
     await tx.wait();

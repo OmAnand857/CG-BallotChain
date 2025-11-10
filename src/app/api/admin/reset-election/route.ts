@@ -22,6 +22,8 @@ export async function POST(request: Request) {
     const contractWithSigner = ballotContract.connect(signer);
     
     // Assuming the function is named resetElection()
+        // @ts-ignore
+
     const tx = await contractWithSigner.declareWinnerAndReset();
     await tx.wait();
     

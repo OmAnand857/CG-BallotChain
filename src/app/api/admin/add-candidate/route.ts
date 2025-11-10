@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
     const signer = getServerSigner();
     const contractWithSigner = ballotContract.connect(signer);
-
+    // @ts-ignore
     const tx = await contractWithSigner.addCandidate(name, info);
     await tx.wait();
 

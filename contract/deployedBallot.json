@@ -1,5 +1,5 @@
 {
-  "address": "0x4BA89D796EC4B65559aa25d668de52dfe7AFb1D1",
+  "address": "0xb5F4753F06397cD7EBF920099E30C430cE31bAD1",
   "abi": [
     {
       "inputs": [
@@ -67,6 +67,25 @@
       "inputs": [
         {
           "indexed": true,
+          "internalType": "uint256",
+          "name": "winnerId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "winnerName",
+          "type": "string"
+        }
+      ],
+      "name": "VoteReset",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
           "internalType": "address",
           "name": "voter",
           "type": "address"
@@ -127,6 +146,13 @@
     },
     {
       "inputs": [],
+      "name": "declareWinnerAndReset",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "getAllCandidates",
       "outputs": [
         {
@@ -178,6 +204,24 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "getLastWinner",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -212,6 +256,32 @@
       "name": "initializeCandidates",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lastWinnerId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lastWinnerName",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {

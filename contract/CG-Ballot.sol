@@ -7,6 +7,10 @@ contract CGBallotChain {
     address public owner;
     mapping(address => bool) public overseer;
 
+    // State variables to store the last winner's information
+    uint public lastWinnerId = type(uint).max; // Using max uint as a 'null' value since 0 is a valid ID
+    string public lastWinnerName = "";
+
     struct Candidate {
         uint id;
         string name;
@@ -18,13 +22,12 @@ contract CGBallotChain {
     mapping(uint => Candidate) private candidates;
     uint public candidatesCount;
 
-    // The 'hasVoted' mapping has been removed to allow multiple votes.
-
     // events
     event CandidateAdded(uint indexed id, string name);
     event Voted(address indexed voter, uint indexed candidateId);
     event OverseerAdded(address indexed addr);
     event OverseerRemoved(address indexed addr);
+    event VoteReset(uint indexed winnerId, string winnerName);
 
     // modifiers
     modifier onlyOwner() {
@@ -51,8 +54,6 @@ contract CGBallotChain {
     }
 
     /// @notice Create contract and optionally initialize candidates
-    /// @param names array of candidate names (can be empty)
-    /// @param infos array of candidate info strings (must match names length)
     constructor(string[] memory names, string[] memory infos) {
         require(names.length == infos.length, "Names/infos length mismatch");
         owner = msg.sender;
@@ -76,23 +77,14 @@ contract CGBallotChain {
     }
 
     /// @notice Cast vote for a candidate id
-    /// @param candidateId the id (0..candidatesCount-1) of candidate to vote for
     function vote(uint candidateId) external {
         require(candidateId < candidatesCount, "Invalid candidate");
-        // The check 'require(!hasVoted[msg.sender], "Already voted");' has been removed.
-
-        // The state update 'hasVoted[msg.sender] = true;' has been removed.
         candidates[candidateId].voteCount += 1;
 
         emit Voted(msg.sender, candidateId);
     }
 
     /// @notice Get candidate details
-    /// @param candidateId id of candidate
-    /// @return name The candidate's name.
-    /// @return info Additional information about the candidate.
-    /// @return voteCount The total number of votes for the candidate.
-    
     function getCandidate(uint candidateId)
         external
         view
@@ -108,9 +100,18 @@ contract CGBallotChain {
         require(candidateId < candidatesCount, "Invalid candidate");
         return candidates[candidateId].voteCount;
     }
+    
+    /// @notice Returns the ID and name of the last declared winner.
+    /// Returns a placeholder ID and empty string if no election has concluded.
+    function getLastWinner() 
+        external 
+        view 
+        returns (uint id, string memory name) 
+    {
+        return (lastWinnerId, lastWinnerName);
+    }
 
     /// @notice Returns arrays of all candidates (names, infos, voteCounts)
-    /// Useful for UIs to fetch full list in one call
     function getAllCandidates()
         external
         view
@@ -128,6 +129,64 @@ contract CGBallotChain {
             votes[i] = c.voteCount;
         }
         return (names, infos, votes);
+    }
+
+    /// @notice Finds the winner and resets all vote counts. (Owner or Overseer only)
+    function declareWinnerAndReset() external onlyOverseerOrOwner {
+        require(candidatesCount > 0, "No candidates to declare winner");
+        
+        uint winningVoteCount = 0;
+        uint[] memory topCandidates = new uint[](candidatesCount); 
+        uint topCandidateCount = 0;
+        uint finalWinnerId = type(uint).max; // Default to 'no winner'
+
+        // 1. Find the maximum vote count
+        for (uint i = 0; i < candidatesCount; i++) {
+            uint currentVotes = candidates[i].voteCount;
+            if (currentVotes > winningVoteCount) {
+                winningVoteCount = currentVotes;
+            }
+        }
+        
+        // 2. Identify all candidates with the winning vote count (potential ties)
+        if (winningVoteCount > 0) {
+            for (uint i = 0; i < candidatesCount; i++) {
+                if (candidates[i].voteCount == winningVoteCount) {
+                    topCandidates[topCandidateCount] = i;
+                    topCandidateCount++;
+                }
+            }
+        }
+
+        // 3. Handle Ties or Single Winner
+        if (topCandidateCount == 1) {
+            // Case: Single undisputed winner
+            finalWinnerId = topCandidates[0];
+        } else if (topCandidateCount > 1) {
+            // Case: Tie-breaker logic using pseudo-random number
+            uint randomSeed = uint(keccak256(abi.encodePacked(block.timestamp, block.prevrandao, msg.sender)));
+            uint winnerIndexInTiedGroup = randomSeed % topCandidateCount;
+            finalWinnerId = topCandidates[winnerIndexInTiedGroup];
+        } 
+        
+        // 4. Update state with winner info and Reset Votes
+        if (finalWinnerId != type(uint).max) {
+            // Store winner data
+            lastWinnerId = finalWinnerId;
+            lastWinnerName = candidates[finalWinnerId].name;
+
+            // Emit Event
+            emit VoteReset(finalWinnerId, lastWinnerName);
+        } else {
+            // If no votes cast (winningVoteCount == 0), clear previous winner data just in case
+            lastWinnerId = type(uint).max;
+            lastWinnerName = "";
+        }
+        
+        // Reset Votes for everyone (regardless of winner)
+        for (uint i = 0; i < candidatesCount; i++) {
+            candidates[i].voteCount = 0;
+        }
     }
 
     /// @notice Owner can add an overseer

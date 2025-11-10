@@ -47,24 +47,40 @@ export default function VoteClientPage({ serverAddress, voteFeeEther }: VoteClie
   const [account, setAccount] = useState<string | null>(null);
   const [hasVoted, setHasVoted] = useState(false);
   const [checkingVoteStatus, setCheckingVoteStatus] = useState(false);
+  const [lastWinner, setLastWinner] = useState<string | null>(null);
+
+  const fetchCandidates = async () => {
+    try {
+      const candidatesResponse = await fetch('/api/candidates');
+      if (!candidatesResponse.ok) {
+        throw new Error('Failed to fetch candidates');
+      }
+      const candidatesData: Candidate[] = await candidatesResponse.json();
+      setCandidates(candidatesData);
+    } catch (err: any) {
+      console.error(err.message);
+      setError('Could not refresh candidate data.');
+    }
+  };
 
   useEffect(() => {
-    // This effect runs once to get the candidates and set the time
-    async function fetchCandidates() {
+    setLoading(true);
+    fetchCandidates().finally(() => setLoading(false));
+
+    const fetchLastWinner = async () => {
       try {
-        const candidatesResponse = await fetch('/api/candidates');
-        if (!candidatesResponse.ok) {
-          throw new Error('Failed to fetch candidates');
+        const response = await fetch('/api/last-winner');
+        const data = await response.json();
+        if (response.ok && data.winner) {
+          setLastWinner(data.winner);
         }
-        const candidatesData: Candidate[] = await candidatesResponse.json();
-        setCandidates(candidatesData);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+      } catch (err) {
+        console.error('Failed to fetch last winner:', err);
       }
-    }
-    fetchCandidates();
+    };
+
+    fetchLastWinner();
+    
     setCurrentTime(new Date().toLocaleString('en-US', { 
       dateStyle: 'medium', 
       timeStyle: 'short' 
@@ -72,7 +88,6 @@ export default function VoteClientPage({ serverAddress, voteFeeEther }: VoteClie
   }, []);
 
   useEffect(() => {
-    // This effect runs when the account changes to check their vote status
     const checkVoteStatus = async () => {
       if (!account) {
         setHasVoted(false);
@@ -96,14 +111,14 @@ export default function VoteClientPage({ serverAddress, voteFeeEther }: VoteClie
 
   const handleVoteSuccess = (txHash: string) => {
     alert(`Vote successful! Transaction: ${txHash}`);
-    setHasVoted(true); // Update state to reflect the new vote
+    setHasVoted(true);
+    fetchCandidates();
   };
 
   const handleVoteError = (errorMessage: string) => {
     alert(`Vote failed: ${errorMessage}`);
   };
   
-  // This function will be passed to WalletClient to update the account state here
   const handleAccountChange = (newAccount: string | null) => {
     setAccount(newAccount);
   };
@@ -139,7 +154,6 @@ export default function VoteClientPage({ serverAddress, voteFeeEther }: VoteClie
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         
-        {/* Network Status Bar */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3 text-sm text-gray-300 bg-slate-800/50 backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg border border-blue-500/20">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -153,7 +167,6 @@ export default function VoteClientPage({ serverAddress, voteFeeEther }: VoteClie
           </div>
         </div>
 
-        {/* Header with Title, Candidate Count, and Server Info */}
         <div className="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex items-center gap-3">
             <h1 className="text-4xl font-bold text-white">Cast Your Vote</h1>
@@ -162,33 +175,39 @@ export default function VoteClientPage({ serverAddress, voteFeeEther }: VoteClie
             </span>
           </div>
           
-          {/* Server Info Pill */}
-          <div className="flex flex-wrap items-center gap-3 bg-slate-800/50 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border border-blue-500/20">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">Server</span>
-              <code className="text-sm font-mono text-blue-400">{shortenAddress(serverAddress)}</code>
-              <CopyButton text={serverAddress} />
-              <a
-                href={`https://sepolia.etherscan.io/address/${serverAddress}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-400 transition-colors"
-                aria-label="View on Etherscan"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            </div>
-            <div className="w-px h-6 bg-slate-700"></div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">Fee</span>
-              <span className="text-sm font-bold text-cyan-400">{voteFeeEther} ETH</span>
+          <div className="flex items-center gap-4">
+            {lastWinner && (
+              <div className="flex items-center gap-3 bg-slate-800/50 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border border-yellow-500/20">
+                <span className="text-xs font-medium text-yellow-400 uppercase tracking-wide">Previous Winner</span>
+                <span className="text-sm font-bold text-yellow-300">{lastWinner}</span>
+              </div>
+            )}
+            <div className="flex flex-wrap items-center gap-3 bg-slate-800/50 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border border-blue-500/20">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">Server</span>
+                <code className="text-sm font-mono text-blue-400">{shortenAddress(serverAddress)}</code>
+                <CopyButton text={serverAddress} />
+                <a
+                  href={`https://sepolia.etherscan.io/address/${serverAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-blue-400 transition-colors"
+                  aria-label="View on Etherscan"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </div>
+              <div className="w-px h-6 bg-slate-700"></div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">Fee</span>
+                <span className="text-sm font-bold text-cyan-400">{voteFeeEther} ETH</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Empty State */}
         {candidates.length === 0 ? (
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl p-12 text-center border border-blue-500/20">
             <div className="max-w-md mx-auto">
@@ -215,7 +234,6 @@ export default function VoteClientPage({ serverAddress, voteFeeEther }: VoteClie
             </div>
           </div>
         ) : (
-          /* Candidate Grid */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {candidates.map((candidate) => {
               const progress = calculateProgress(candidate.voteCount, candidates);
@@ -257,10 +275,10 @@ export default function VoteClientPage({ serverAddress, voteFeeEther }: VoteClie
                       candidateId={candidate.id}
                       onVoteSuccess={handleVoteSuccess}
                       onVoteError={handleVoteError}
-                      onAccountChange={handleAccountChange} // Pass the handler
-                      hasVoted={hasVoted} // Pass the vote status
-                      isCheckingVoteStatus={checkingVoteStatus} // Pass loading status
-                      account={account} // Pass the account state
+                      onAccountChange={handleAccountChange}
+                      hasVoted={hasVoted}
+                      isCheckingVoteStatus={checkingVoteStatus}
+                      account={account}
                     />
                   </div>
                   ) : (

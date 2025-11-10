@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { ballotContract, getServerSigner } from '~/lib/contract';
-import { verifyAdminToken } from '~/lib/adminAuth';
-import db from '~/lib/db';
+import { ballotContract, getServerSigner } from '../../../../../lib/contract';
+import { verifyAdminToken } from '../../../../../lib/adminAuth';
+import db from '../../../../../lib/db';
 
 export async function POST(request: Request) {
   try {
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const contractWithSigner = ballotContract.connect(signer);
     
     // Assuming the function is named resetElection()
-    const tx = await contractWithSigner.resetElection();
+    const tx = await contractWithSigner.declareWinnerAndReset();
     await tx.wait();
     
     console.log('Contract reset successfully. Tx:', tx.hash);

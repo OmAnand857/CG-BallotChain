@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     }
 
     // 1. Verify the transaction
-    const verificationResult = await verifyPaymentTransaction(txHash, fromAddress);
+    // const verificationResult = await verifyPaymentTransaction(txHash, fromAddress);
     const verificationResult = await verifyPaymentTransaction(txHash, fromAddress);
 
     if (!verificationResult.success) {

@@ -1,5 +1,5 @@
 {
-  "address": "0xb5F4753F06397cD7EBF920099E30C430cE31bAD1",
+  "address": "0x07A6dF196A49A1F3337f3D1B31a06cDE71675F5b",
   "abi": [
     {
       "inputs": [
@@ -34,6 +34,19 @@
         }
       ],
       "name": "CandidateAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "formerCandidateCount",
+          "type": "uint256"
+        }
+      ],
+      "name": "CandidatesCleared",
       "type": "event"
     },
     {

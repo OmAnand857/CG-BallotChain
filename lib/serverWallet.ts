@@ -47,9 +47,10 @@ export async function verifyPaymentTransaction(
       return { success: false };
     }
 
-    if (txReceipt.confirmations < CONFIRMATIONS_REQUIRED) {
+    const confirmations = await txReceipt.getConfirmations();
+    if (confirmations < CONFIRMATIONS_REQUIRED) {
       console.log(
-        `Transaction ${txHash} has only ${txReceipt.confirmations} confirmations, ${CONFIRMATIONS_REQUIRED} required.`
+        `Transaction ${txHash} has only ${confirmations} confirmations, ${CONFIRMATIONS_REQUIRED} required.`
       );
       return { success: false };
     }

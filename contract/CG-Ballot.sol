@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 /// @title CGBallotChain - Simple voting contract with overseers
-/// @notice Owner can add candidates and overseers. Voters can cast one vote each.
+/// @notice Owner can add candidates and overseers. Voters can cast multiple votes each.
 contract CGBallotChain {
     address public owner;
     mapping(address => bool) public overseer;
@@ -18,8 +18,7 @@ contract CGBallotChain {
     mapping(uint => Candidate) private candidates;
     uint public candidatesCount;
 
-    // voting tracking
-    mapping(address => bool) public hasVoted;
+    // The 'hasVoted' mapping has been removed to allow multiple votes.
 
     // events
     event CandidateAdded(uint indexed id, string name);
@@ -80,9 +79,9 @@ contract CGBallotChain {
     /// @param candidateId the id (0..candidatesCount-1) of candidate to vote for
     function vote(uint candidateId) external {
         require(candidateId < candidatesCount, "Invalid candidate");
-        require(!hasVoted[msg.sender], "Already voted");
+        // The check 'require(!hasVoted[msg.sender], "Already voted");' has been removed.
 
-        hasVoted[msg.sender] = true;
+        // The state update 'hasVoted[msg.sender] = true;' has been removed.
         candidates[candidateId].voteCount += 1;
 
         emit Voted(msg.sender, candidateId);

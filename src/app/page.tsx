@@ -28,9 +28,9 @@ export default function HomePage() {
               <Link href="/contact" className="text-gray-300 hover:text-white transition">
                 Contact
               </Link>
-              <button className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-cyan-700 transition">
+              <Link href="/vote" className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-cyan-700 transition">
                 Launch App
-              </button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -54,9 +54,9 @@ export default function HomePage() {
               <Link href="/contact" className="block text-gray-300 hover:text-white">
                 Contact
               </Link>
-              <button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-2 rounded-lg">
+              <Link href="/vote" className="w-full block text-center bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-2 rounded-lg">
                 Launch App
-              </button>
+              </Link>
             </div>
           </div>
         )}
@@ -81,10 +81,10 @@ export default function HomePage() {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition flex items-center justify-center space-x-2 shadow-lg shadow-blue-500/50">
+                <Link href="/vote" className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition flex items-center justify-center space-x-2 shadow-lg shadow-blue-500/50">
                   <span>Get Started</span>
                   <ChevronRight className="w-5 h-5" />
-                </button>
+                </Link>
                 <button className="bg-slate-800 text-white px-8 py-4 rounded-lg font-semibold hover:bg-slate-700 transition border border-slate-700">
                   Watch Demo
                 </button>
@@ -441,9 +441,9 @@ export default function HomePage() {
             <div className="relative z-10">
               <h2 className="text-4xl font-bold text-white mb-4">Ready to Transform Democracy?</h2>
               <p className="text-xl text-blue-100 mb-8">Join thousands using blockchain technology for secure voting</p>
-              <button className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition shadow-xl">
+              <Link href="/vote" className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition shadow-xl">
                 Start Voting Now
-              </button>
+              </Link>
             </div>
           </div>
         </div>

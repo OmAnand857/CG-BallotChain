@@ -1,5 +1,5 @@
 {
-  "address": "0x4BA89D796EC4B65559aa25d668de52dfe7AFb1D1",
+  "address": "0x1021B8d4454B65DafC8B4B8EEB7087CD109fd3ce",
   "abi": [
     {
       "inputs": [
@@ -191,6 +191,25 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "hasVoted",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
         }
       ],
       "stateMutability": "view",

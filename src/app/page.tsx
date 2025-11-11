@@ -85,9 +85,14 @@ export default function HomePage() {
                   <span>Get Started</span>
                   <ChevronRight className="w-5 h-5" />
                 </Link>
-                <button className="bg-slate-800 text-white px-8 py-4 rounded-lg font-semibold hover:bg-slate-700 transition border border-slate-700">
+                <a 
+                  href="https://drive.google.com/file/d/1nrLwNvFTpkhe2OAyrbBaUiNBFuXrhFqo/view?usp=drive_link" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="bg-slate-800 text-white px-8 py-4 rounded-lg font-semibold hover:bg-slate-700 transition border border-slate-700 flex items-center justify-center"
+                >
                   Watch Demo
-                </button>
+                </a>
               </div>
 
               <div className="flex items-center space-x-8 pt-4">
